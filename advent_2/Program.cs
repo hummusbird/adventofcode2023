@@ -22,7 +22,7 @@ class Program
         int blue = 14;
 
         List<int> impossiblegames = new();
-        List<int> gamepowers = new();
+        int gamepowers = 0;
 
         foreach (List<List<string>> game in games)
         {
@@ -57,7 +57,7 @@ class Program
                 }
             }
 
-            gamepowers.Add(lowestred * lowestgreen * lowestblue);
+            gamepowers += lowestred * lowestgreen * lowestblue;
         }
 
         impossiblegames = impossiblegames.Distinct().ToList();
@@ -66,7 +66,7 @@ class Program
 
         for (int i = 1; i < games.Count() + 1; i++) { if (!impossiblegames.Contains(i)) { total += i; } }
 
-        Console.WriteLine("part one: " + total);
-        Console.WriteLine("part two: " + gamepowers.Sum());
+        Console.WriteLine("sums:\t" + total);
+        Console.WriteLine("powers:\t" + gamepowers);
     }
 }
