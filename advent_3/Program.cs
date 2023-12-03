@@ -3,7 +3,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string[] input = File.ReadAllLines("input.txt");
+        string[] input = File.ReadAllLines("test.txt");
 
         int total = 0;
 
@@ -35,7 +35,7 @@ class Program
                             if (x == 0 && j < 0) { j++; } // don't go out of range
                             else if (x + j == input[y].Length || found) { break; } // dont go out of range
 
-                            //Console.WriteLine("length:\t" + length + "\nx: " + x + " y: " + y + "\nj: " + j + " k: " + k);
+                            //Console.WriteLine("length:\t" + length + "\nx: " + x + "\ty: " + y + "\nj: " + j + "\tk: " + k);
 
                             if (!char.IsDigit(input[y + k][x + j]) && input[y + k][x + j] != '.') // anything that isn't a number or '.'
                             {
@@ -47,9 +47,9 @@ class Program
                                     number += input[y][x + h].ToString();
                                 }
 
-                                Console.WriteLine("number:\t" + number);
-                                //Console.WriteLine("\nsymbol:\t" + input[y + k][x + j]);
-                                //Console.WriteLine("coords:\t" + (y + k + 1) + "," + (x + j + 1));
+                                Console.WriteLine("\nnumber:\t" + number);
+                                Console.WriteLine("symbol:\t" + input[y + k][x + j]);
+                                Console.WriteLine("coords:\t" + (y + k + 1) + "," + (x + j + 1));
                                 total += int.Parse(number); // add number to total
                                 break;
                             }
