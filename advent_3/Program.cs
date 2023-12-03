@@ -3,7 +3,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string[] input = File.ReadAllLines("test.txt");
+        string[] input = File.ReadAllLines("input.txt");
 
         int total = 0;
 
@@ -30,7 +30,7 @@ class Program
                         if (y == 0 && k < 0) { k++; } // don't go out of range
                         else if (y + k == input.Length || found) { break; } // don't go out of range
 
-                        for (int j = -1; j <= length + 1; j++) // j is our x incrementor
+                        for (int j = -1; j <= length; j++) // j is our x incrementor
                         {
                             if (x == 0 && j < 0) { j++; } // don't go out of range
                             else if (x + j == input[y].Length || found) { break; } // dont go out of range
