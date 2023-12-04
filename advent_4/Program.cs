@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace advent_4;
+﻿namespace advent_4;
 class Program
 {
     static void Main(string[] args)
