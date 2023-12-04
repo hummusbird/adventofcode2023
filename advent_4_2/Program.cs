@@ -18,16 +18,12 @@ class Program
             });
         }
 
-        int i = 0;
-
-        while (i < cards.Count)
+        foreach (Card card in cards)
         {
-            for (int j = cards[i].Number; j < cards[i].Number + cards[i].Intersection!.Count; j++)
+            for (int i = card.Number; i < card.Number + card.Intersection!.Count; i++)
             {
-                cards[j].Amount += cards[i].Amount;
+                cards[i].Amount += card.Amount;
             }
-
-            i++;
         }
 
         Console.WriteLine(cards.Select(card => card.Amount).Sum());
