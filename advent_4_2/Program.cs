@@ -22,12 +22,10 @@ class Program
 
         while (i < cards.Count)
         {
-            for (int j = cards[i].Number; j < cards[i].Number + cards[i].Intersection.Count; j++)
+            for (int j = cards[i].Number; j < cards[i].Number + cards[i].Intersection!.Count; j++)
             {
                 cards[j].Amount += cards[i].Amount;
             }
-
-            if (cards.Count % 100 == 0) { Console.WriteLine(cards.Count + " " + cards[i].Number + " " + i); }
 
             i++;
         }
@@ -39,6 +37,6 @@ class Program
     {
         public int Amount = 1;
         public int Number { get; set; }
-        public List<int> Intersection { get; set; }
+        public List<int>? Intersection { get; set; }
     }
 }
