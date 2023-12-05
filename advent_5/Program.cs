@@ -3,107 +3,63 @@ class Program
 {
     static void Main(string[] args)
     {
-        /*
-            the only reason i'm commiting this code before i found the answer, is just to document how massively
-            overengineered i keep writing code. There is no reason i had to store every fucking value, but here
-            i am, with a program that runs out of memory in less than thirty seconds. well done, me.
-        */
-
-        string input = File.ReadAllText("input.txt");
+        string input = File.ReadAllText("test2.txt");
 
         List<long> seeds = input.Split("\n")[0].Replace("seeds: ", "").Split(" ").Select(long.Parse).ToList();
 
-        Dictionary<long, long> seedtosoil = new();
-        foreach (string line in input.Replace("seed-to-soil map:\n", "").Split("\n\n")[1].Split("\n").ToList())
-        {
-            List<long> maps = line.Split(" ").Select(long.Parse).ToList();
+        List<string> groups = input.Split("\n\n").ToList();
+        List<List<List<long>>> maps = new();
 
-            for (long i = 0; i < maps[2]; i++)
+        for (int i = 1; i < groups.Count; i++)
+        {
+            List<string> mapinput = groups[i].Split("\n").ToList();
+            List<List<long>> map = new();
+
+            for (int j = 1; j < mapinput.Count; j++)
             {
-                seedtosoil.Add(maps[1] + i, maps[0] + i);
+                map.Add(mapinput[j].Split(" ").Select(long.Parse).ToList());
             }
+
+            maps.Add(map);
         }
 
-        Dictionary<long, long> soiltofertilizer = new();
-        foreach (string line in input.Replace("soil-to-fertilizer map:\n", "").Split("\n\n")[2].Split("\n").ToList())
-        {
-            List<long> maps = line.Split(" ").Select(long.Parse).ToList();
-
-            for (long i = 0; i < maps[2]; i++)
-            {
-                soiltofertilizer.Add(maps[1] + i, maps[0] + i);
-            }
-        }
-
-        Dictionary<long, long> fertilizertowater = new();
-        foreach (string line in input.Replace("fertilizer-to-water map:\n", "").Split("\n\n")[3].Split("\n").ToList())
-        {
-            List<long> maps = line.Split(" ").Select(long.Parse).ToList();
-
-            for (long i = 0; i < maps[2]; i++)
-            {
-                fertilizertowater.Add(maps[1] + i, maps[0] + i);
-            }
-        }
-
-        Dictionary<long, long> watertolight = new();
-        foreach (string line in input.Replace("water-to-light map:\n", "").Split("\n\n")[4].Split("\n").ToList())
-        {
-            List<long> maps = line.Split(" ").Select(long.Parse).ToList();
-
-            for (long i = 0; i < maps[2]; i++)
-            {
-                watertolight.Add(maps[1] + i, maps[0] + i);
-            }
-        }
-
-        Dictionary<long, long> lighttotemp = new();
-        foreach (string line in input.Replace("light-to-temperature map:\n", "").Split("\n\n")[5].Split("\n").ToList())
-        {
-            List<long> maps = line.Split(" ").Select(long.Parse).ToList();
-
-            for (long i = 0; i < maps[2]; i++)
-            {
-                lighttotemp.Add(maps[1] + i, maps[0] + i);
-            }
-        }
-
-        Dictionary<long, long> temptomoist = new();
-        foreach (string line in input.Replace("temperature-to-humidity map:\n", "").Split("\n\n")[6].Split("\n").ToList())
-        {
-            List<long> maps = line.Split(" ").Select(long.Parse).ToList();
-
-            for (long i = 0; i < maps[2]; i++)
-            {
-                temptomoist.Add(maps[1] + i, maps[0] + i);
-            }
-        }
-
-        Dictionary<long, long> moisttopos = new();
-        foreach (string line in input.Replace("humidity-to-location map:\n", "").Split("\n\n")[7].Split("\n").ToList())
-        {
-            List<long> maps = line.Split(" ").Select(long.Parse).ToList();
-
-            for (long i = 0; i < maps[2]; i++)
-            {
-                moisttopos.Add(maps[1] + i, maps[0] + i);
-            }
-        }
-
-        List<long> locations = new();
+        List<long> outputs = new();
+        long lowest = 9999999999;
 
         foreach (long seed in seeds)
         {
-            long soil = seedtosoil.ContainsKey(seed) ? seedtosoil[seed] : seed;
-            long fertilizer = soiltofertilizer.ContainsKey(soil) ? soiltofertilizer[soil] : soil;
-            long water = fertilizertowater.ContainsKey(fertilizer) ? fertilizertowater[fertilizer] : fertilizer;
-            long light = watertolight.ContainsKey(water) ? watertolight[water] : water;
-            long temperature = lighttotemp.ContainsKey(light) ? lighttotemp[light] : light;
-            long humidity = temptomoist.ContainsKey(temperature) ? temptomoist[temperature] : temperature;
-            long location = moisttopos.ContainsKey(humidity) ? moisttopos[humidity] : humidity;
-            locations.Add(location);
+            outputs.Add(GoDeeper(seed, maps, 0));
         }
 
-        Console.WriteLine(locations.Min());
+        for (long i = 0; i < seeds.Count; i += 2)
+        {
+            for (long j = seeds[0]; j < seeds[0] + seeds[1]; j++)
+            {
+                long output = GoDeeper(j, maps, 0);
+                if (output < lowest) { Console.WriteLine(lowest); lowest = output; };
+            }
+            //if (i % 1000000 == 0) { Console.WriteLine(i); }
+        }
+
+        Console.WriteLine("Part 1: " + outputs.Min());
+        Console.WriteLine("Part 2: " + lowest);
+    }
+
+    static long GoDeeper(long value, List<List<List<long>>> maps, long depth)
+    {
+        foreach (List<long> range in maps[(int)depth])
+        {
+            if (value >= range[1] && value <= range[1] + range[2])
+            {
+                value += range[0] - range[1];
+                break;
+            }
+        }
+
+        depth++;
+
+        if (depth < maps.Count) { value = GoDeeper(value, maps, depth); }
+
+        return value;
     }
 }
