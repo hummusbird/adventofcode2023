@@ -32,7 +32,7 @@ class Program
     public class Card
     {
         public int Amount = 1;
-        public int Number { get; set; }
-        public List<int>? Intersection { get; set; }
+        public int Number;
+        public List<int>? Intersection;
     }
 }
