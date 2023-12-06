@@ -1,6 +1,4 @@
-﻿using System.Collections.Immutable;
-
-namespace advent_6;
+﻿namespace advent_6;
 class Program
 {
     static void Main(string[] args)
