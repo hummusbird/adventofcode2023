@@ -125,8 +125,11 @@ class Program
             .ThenByDescending(x => sort.IndexOf(x[3].ToString()))
             .ThenByDescending(x => sort.IndexOf(x[4].ToString())).ToList();
 
-        five = five.OrderByDescending(x => sort.IndexOf(x[0].ToString())).ToList();
-
+        five = five.OrderByDescending(x => sort.IndexOf(x[0].ToString()))
+            .ThenByDescending(x => sort.IndexOf(x[1].ToString()))
+            .ThenByDescending(x => sort.IndexOf(x[2].ToString()))
+            .ThenByDescending(x => sort.IndexOf(x[3].ToString()))
+            .ThenByDescending(x => sort.IndexOf(x[4].ToString())).ToList();
         ulong score = 0;
 
         List<string> concat = zero.Concat(one).Concat(two).Concat(three).Concat(fullhouse).Concat(four).Concat(five).ToList();
