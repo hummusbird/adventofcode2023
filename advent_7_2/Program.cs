@@ -29,7 +29,7 @@ class Program
                 switch (replaced.Distinct().ToList().Count)
                 {
                     case 1: // AAAAA five of a kind
-                        five.Add(hand);
+                        handtype = handtype < 6 ? 6 : handtype;
                         break;
 
                     case 2:
@@ -74,6 +74,9 @@ class Program
                     break;
                 case 5:
                     four.Add(hand);
+                    break;
+                case 6:
+                    five.Add(hand);
                     break;
             }
         }
