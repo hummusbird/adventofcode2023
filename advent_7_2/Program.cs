@@ -6,7 +6,7 @@ class Program
     {
         List<string> hands = File.ReadAllLines("input.txt").ToList();
 
-        List<string> sort = new List<string> { "A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J" };
+        List<string> sort = new() { "A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J" };
 
         List<string> five = new();      // AAAAA
         List<string> four = new();      // 55559
@@ -22,17 +22,14 @@ class Program
 
             int handtype = 0;
 
-            List<string> droppedJ = sort.ToList();
-            droppedJ.Remove("J");
-
-            foreach (string wild in droppedJ)
+            for (int i = 0; i < sort.Count - 1; i++)
             {
-                string replaced = cards.Replace("J", wild);
+                string replaced = cards.Replace("J", sort[i]);
 
                 switch (replaced.Distinct().ToList().Count)
                 {
                     case 1: // AAAAA five of a kind
-                        handtype = handtype < 6 ? 6 : handtype;
+                        five.Add(hand);
                         break;
 
                     case 2:
@@ -52,8 +49,8 @@ class Program
                         handtype = handtype < 1 ? 1 : handtype;
                         break;
 
-                    case 5:
-                        handtype = handtype < 1 ? 1 : handtype;
+                    case 5: // 23456 no matches
+                        handtype = handtype < 0 ? 0 : handtype;
                         break;
                 }
             }
@@ -77,9 +74,6 @@ class Program
                     break;
                 case 5:
                     four.Add(hand);
-                    break;
-                case 6:
-                    five.Add(hand);
                     break;
             }
         }
