@@ -4,10 +4,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        List<string> input = File.ReadAllLines("test.txt").ToList();
-        List<List<string>> results = new();
-
-        results.Add(moveEast(moveSouth(moveWest(moveNorth(input.ToList())))));
+        List<string> input = File.ReadAllLines("input.txt").ToList();
+        List<List<string>> results = [input.ToList()];
 
         for (int i = 1; i < 1000000000; i++)
         {
@@ -19,15 +17,15 @@ class Program
                 {
                     int loopstart = results.IndexOf(search);
                     int length = i - loopstart;
-                    int lastIndex = ((1000000000 - loopstart) % length) + 1;
+                    int loopindex = (1000000000 - loopstart) % length;
 
-                    Console.WriteLine(loopstart + " " + i + " " + length + " " + lastIndex);
+                    Console.WriteLine("start index:\t" + loopstart + "\nend index:\t" + i + "\nloop length:\t" + length + "\nloop index:\t" + loopindex);
 
                     long load = 0;
 
-                    for (int j = 0; j < results[lastIndex].Count; j++)
+                    for (int j = 0; j < results[loopindex + loopstart].Count; j++)
                     {
-                        load += results[lastIndex][j].Count(c => c == 'O') * (results[lastIndex].Count - j);
+                        load += results[loopindex + loopstart][j].Count(c => c == 'O') * (results[loopindex + loopstart].Count - j);
                     }
 
                     Console.WriteLine(load);
