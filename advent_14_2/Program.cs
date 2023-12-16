@@ -4,35 +4,40 @@ class Program
 {
     static void Main(string[] args)
     {
-        List<string> input = File.ReadAllLines("input.txt").ToList();
+        List<string> input = File.ReadAllLines("test.txt").ToList();
         List<List<string>> results = new();
 
         results.Add(moveEast(moveSouth(moveWest(moveNorth(input.ToList())))));
 
-        for (long i = 0; i < 1000000000; i++)
+        for (int i = 1; i < 1000000000; i++)
         {
             List<string> cycle = moveEast(moveSouth(moveWest(moveNorth(results[^1].ToList()))));
 
-            if (results.Contains(cycle))
+            foreach (List<string> search in results)
             {
-                Console.WriteLine("Found cycle at " + i);
+                if (search.SequenceEqual(cycle))
+                {
+                    int loopstart = results.IndexOf(search);
+                    int length = i - loopstart;
+                    int lastIndex = ((1000000000 - loopstart) % length) + 1;
 
-                Console.WriteLine(1000000000 % i);
+                    Console.WriteLine(loopstart + " " + i + " " + length + " " + lastIndex);
 
-                break;
+                    long load = 0;
+
+                    for (int j = 0; j < results[lastIndex].Count; j++)
+                    {
+                        load += results[lastIndex][j].Count(c => c == 'O') * (results[lastIndex].Count - j);
+                    }
+
+                    Console.WriteLine(load);
+
+                    Environment.Exit(0);
+                }
             }
 
             results.Add(cycle);
         }
-
-        int load = 0;
-
-        for (int i = 0; i < results[^1].Count; i++)
-        {
-            load += results[^1][i].Count(c => c == 'O') * (results[^1].Count - i);
-        }
-
-        Console.WriteLine(load);
     }
 
     static List<string> moveNorth(List<string> input)
